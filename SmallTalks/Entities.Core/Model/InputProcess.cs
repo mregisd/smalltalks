@@ -19,6 +19,5 @@ namespace Entities.Domain.Models
         {
             return new InputProcess { Input = input, Output = input };
         }
-
     }
 }

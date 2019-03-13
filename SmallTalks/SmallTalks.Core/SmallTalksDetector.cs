@@ -58,7 +58,7 @@ namespace SmallTalks.Core
                 _logger.Information("For '{@Input}' and {@SmallTalkConfiguration} response was: {@Analysis}", input, configuration, analysis);
                 return analysis;
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.Error(ex, "For '{@Input}' and {@SmallTalkConfiguration} response was: {@ErrorMessage}", input, configuration, ex.Message);
                 throw ex;
@@ -88,7 +88,11 @@ namespace SmallTalks.Core
             (parsedInput, haveCursedWords) = await _curseWordsDetector.ReplaceWordsAsync(parsedInput, InputProcess.Placeholder);
             analysis.HaveCursedWords = haveCursedWords;
 
+            //var match = true;
+            //var parsedInputProcess = InputProcess.FromStringNoOutput("  ");
             parsedInput = ParseInputSearchingForSmallTalks(configuration, analysis, parsedInput);
+            //parsedInputProcess = InputProcess.FromStringNoOutput(parsedInput);
+            //parsedInputProcess.RemovePlaceholder();
 
             await FillHigherInformationLevel(configuration, analysis, parsedInput);
 

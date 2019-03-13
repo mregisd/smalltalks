@@ -20,12 +20,11 @@ namespace SmallTalks.Core.Services
             var patterns = rule.Patterns
                 .Select(p => Regex.IsMatch(p, "^\\w") ? $"\\b{p}" : p)
                 .Select(p => Regex.IsMatch(p, "\\w$") ? $"{p}\\b" : p)
-                //.Select(p => TypeDetector(rule.Position, p))
+                .Select(p => RegexAdd(rule.Position, p))
                 .ToList();
-            var patterns2 = PositionDetector(rule.Position, patterns);
-
-            var regexPattern = string.Join('|', patterns2);
-
+            var finalPatterns = patterns.SelectMany(x => x).ToList();
+            var regexPattern = string.Join('|', finalPatterns);
+ 
             stIntent.Regex = new Regex(regexPattern, Configuration.ST_REGEX_OPTIONS);
             stIntent.Priority = rule.Priority;
 
@@ -41,7 +40,7 @@ namespace SmallTalks.Core.Services
         }
 
         #region private methods
-        private List<string> PositionDetector(List<string> positions, List<string> patterns)
+        private List<string> RegexAdd(List<string> positions, string pattern)
         {
             var finalPatterns = new List<string>();
             foreach (var position in positions)
@@ -49,15 +48,15 @@ namespace SmallTalks.Core.Services
                 switch (position)
                 {
                     case "alone":
-                        finalPatterns.InsertRange(finalPatterns.Count, RegexAdd(patterns, position));
+                        finalPatterns.Add(string.Concat("^", pattern, "$"));
                         break;
 
                     case "beginning":
-                        finalPatterns.InsertRange(finalPatterns.Count, RegexAdd(patterns, position));
+                        finalPatterns.Add(string.Concat("^", pattern));
                         break;
 
                     case "ending":
-                        finalPatterns.InsertRange(finalPatterns.Count, RegexAdd(patterns, position));
+                        finalPatterns.Add(string.Concat(pattern, "$"));
                         break;
 
                     default:
@@ -66,29 +65,6 @@ namespace SmallTalks.Core.Services
             }
 
             return finalPatterns;
-        }
-
-        private List<string> RegexAdd(List<string> patterns, string regexType)
-        {
-            var newPatterns = new List<string>();
-
-            foreach (var pattern in patterns)
-            {
-                if(regexType == "alone")
-                {
-                    newPatterns.Add(string.Concat("^", pattern, "$"));
-                }
-                else if (regexType == "beginning")
-                {
-                    newPatterns.Add(string.Concat("^", pattern));
-                }
-                else
-                {
-                    newPatterns.Add(string.Concat(pattern, "$"));
-                }
-            }
-
-            return newPatterns;
         }
         #endregion
     }
