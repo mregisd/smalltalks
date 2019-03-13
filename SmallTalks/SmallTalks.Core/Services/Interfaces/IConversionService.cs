@@ -6,5 +6,6 @@ namespace SmallTalks.Core.Services.Interfaces
     {
         SmallTalksDectectorData ToDetectorData(RulesData rules);
         SmallTalksIntent ToIntent(Rule rule);
+        SmallTalksIntent ToIntentv2(Rule rule);
     }
 }

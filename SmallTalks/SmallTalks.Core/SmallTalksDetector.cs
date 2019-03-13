@@ -88,11 +88,7 @@ namespace SmallTalks.Core
             (parsedInput, haveCursedWords) = await _curseWordsDetector.ReplaceWordsAsync(parsedInput, InputProcess.Placeholder);
             analysis.HaveCursedWords = haveCursedWords;
 
-            //var match = true;
-            //var parsedInputProcess = InputProcess.FromStringNoOutput("  ");
             parsedInput = ParseInputSearchingForSmallTalks(configuration, analysis, parsedInput);
-            //parsedInputProcess = InputProcess.FromStringNoOutput(parsedInput);
-            //parsedInputProcess.RemovePlaceholder();
 
             await FillHigherInformationLevel(configuration, analysis, parsedInput);
 
