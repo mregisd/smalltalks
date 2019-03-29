@@ -6,7 +6,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace SmallTalks.Core.Services.v2
+namespace SmallTalks.Core.Services
 {
     public class ModelConversionService : IConversionService
     {
